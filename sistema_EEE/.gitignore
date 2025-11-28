@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyd
+*.pyo
+*.pdb
+*.egg-info/
+
+# Virtual environment
+venv/
+ENV/
+env/
+
+# VSCode settings
+.vscode/
+
+# Django stuff
+*.log
+media/
+staticfiles/
+static_root/
+db.sqlite3
+
+# PyInstaller / EXE builds
+build/
+dist/
+*.spec
+
+# Render deploy files
+*.sqlite3

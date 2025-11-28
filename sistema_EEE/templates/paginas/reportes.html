@@ -1,0 +1,60 @@
+{% extends 'base/home.html' %}
+{% load static %}
+
+{% block title %}<title>Reportes</title>{% endblock %} 
+{% block content %}
+    <h2>REPORTES</h2>
+    <p>Consultar reporteria relacionada a los alumnos</p>
+{% endblock %}
+{% block modulo %}
+<div class="contenedor2">
+    <h2>Reportes</h2>
+
+    <label for="buscarAlumno">Buscar alumno:</label>
+    <input type="text" id="buscarAlumno" class="form-control" placeholder="Escribe el nombre">
+
+    <div id="resultadosBusqueda" class="lista-resultados"></div>
+
+    <br>
+
+    <form method="GET" id="formFiltro">
+        <input type="hidden" name="alumno_id" id="alumno_id">
+        <button type="submit" class="btn btn-primary">Filtrar</button>
+    </form>
+
+    <br><br>
+
+    <table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Tipo</th>
+            <th>Fecha</th>
+            <th>Personal</th>
+            <th>Archivo</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for item in historial %}
+        <tr>
+            <td>{{ item.tipo }}</td>
+            <td>{{ item.fecha }}</td>
+            <td>{{ item.personal }}</td>
+            <td>
+                {% if item.archivo %}
+                    <a href="{{ item.archivo }}" download>Descargar</a>
+                {% else %}
+                    Sin archivo
+                {% endif %}
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="4">No hay registros para este alumno.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+    </table>
+</div>
+    
+{% endblock %}

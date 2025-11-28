@@ -1,0 +1,51 @@
+{% extends 'base/home.html' %}
+{% load static %}
+
+{% block title %}<title>PAEI</title>{% endblock %} 
+{% block content %}
+    <h2>DASHBOARD</h2>
+    <p>Explain about this page</p>
+{% endblock %}
+{% block modulo %}
+<div class="contenedor2">
+    <h2>Crear PAEI</h2>
+
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div>
+            <label>Alumno</label><br>
+            {{ form.alumno }}
+        </div><br>
+
+        <div>
+            <label>Personal encargado</label><br>
+            {{ form.personal }}
+        </div><br>
+
+        <div>
+            <label>Fecha realizado</label><br>
+            {{ form.fecha_realizado }}
+        </div><br>
+
+        <div>
+            <label>Hora realizado</label><br>
+            {{ form.hora_realizado }}
+        </div><br>
+
+        <div>
+            <label>Archivo PAEI (PDF)</label><br>
+            {{ form.archivo_paei }}
+        </div><br>
+
+        <div>
+            <label>Observaciones</label><br>
+            {{ form.observaciones }}
+        </div><br>
+
+        <button type="submit" class="button">Guardar PAEI</button>
+
+    </form>
+</div>
+    
+{% endblock %}

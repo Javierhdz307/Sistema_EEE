@@ -1,0 +1,72 @@
+{% load static %}
+{% load widget_tweaks %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% block title %}
+    <title>Home</title>
+    {% endblock %}
+    <link rel="stylesheet" type="text/css" href="{% static '/css/estilos.css' %}">
+    <script src="{% static '/js/principal.js' %}"></script>
+</head>
+<body>
+  
+    <div class="nav">
+      <nav class="nav-align">
+        <div class="container-logo">
+          <p class="p-logo">SISTEMA EEE</p>
+        </div>
+        <ul class="nav-align">     
+          <li class="nav-li"><a href="{% url 'citas' %}">CITAS</a></li>
+          <li class="nav-li"><a href="{% url 'examenes' %}">EXAMENES</a></li>
+          <li class="nav-li"><a href="{% url 'PAEI' %}">PAEI</a></li>
+          <li class="nav-li"><a href="{% url 'reportes' %}">REPORTES</a></li>
+          <li class="nav-li"><a href="{% url 'usuarios' %}">REGISTRO</a></li>
+          <li class="nav-li"><a href="/admin/">PANEL ADMINISTRACION</a></li>
+        </ul>
+      </nav>
+    </div>
+    
+    
+    <div class="right-block">
+      <div class="context">
+        <div class="dashboard">
+          {% block content %}
+          <h2>DASHBOARD</h2>
+          <p>Seleccione una opcion en el menú lateral</p>
+          {% endblock %}
+        </div>
+      </div>
+      <div class="perfil">
+        {% if user.is_authenticated %}
+        <div class="usuario-info">
+          {% if user.profile.image %}
+            <img src="{{ user.profile.image.url }}" alt="Foto de perfil" class="foto-perfil">
+          {% else %}
+            <img src="{{ MEDIA_URL }}users/usuario_defecto.jpg" alt="Foto de perfil" class="foto-perfil">
+          {% endif %}
+          <div class="usuario-detalle">
+            <span class="nombre-usuario">
+            {{ user.profile.nombre|default:user.username }} {{ user.profile.apellido|default:"" }}
+            </span><br>
+            <span class="correo-usuario">{{ user.email }}</span>
+          </div>
+            <form method="post" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button class="logout-btn" type="submit">logout</button>
+            </form>
+        </div>
+        {% else %}
+          <a href="{% url 'login' %}" class="logout-btn">Iniciar sesión</a>
+        {% endif %}
+      </div>
+    </div>
+    <div class="modulo">
+      {% block modulo %}{% endblock %}
+    </div>
+  
+</body>
+</html>

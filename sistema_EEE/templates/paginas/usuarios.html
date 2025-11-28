@@ -1,0 +1,99 @@
+{% extends 'base/home.html' %}
+{% load static %}
+
+{% block title %}<title>Seguimiento</title>{% endblock %} 
+{% block content %}
+    <h2>REGISTRO</h2>
+    <p>Registro de Alumnos y personal institucional.</p>
+{% endblock %}
+{% block modulo %}
+<div class="cita-btns">
+    <li class="button {% if tab == 'personal' %}active{% endif %}">
+        <a href="?tab=personal"><label>Personal</label></a>
+    </li>
+    <li class="button {% if tab == 'alumnos' %}active{% endif %}">
+        <a href="?tab=alumnos"><label>Alumnos</label></a>
+    </li>
+</div>
+<!-- TABLA DE ALUMNOS -->
+{% if tab == "alumnos" %}
+<table class="tabla-usuarios">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nombres</th>
+            <th>Apellidos</th>
+            <th>Edad</th>
+            <th>Encargado</th>
+            <th>Estado</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for a in alumnos %}
+        <tr>
+            <td>{{ a.IdAlumno }}</td>
+            <td>{{ a.NombreAlumno }}</td>
+            <td>{{ a.ApellidoAlumno }}</td>
+            <td>{{ a.EdadAlumno }}</td>
+            <td>{{ a.EncargadoAlumno }}</td>
+
+            <td>
+                {% if a.Activo %}
+                    <span class="estado activo">Activo</span>
+                {% else %}
+                    <span class="estado inactivo">Inactivo</span>
+                {% endif %}
+            </td>
+            <td>
+                <a class="btn-editar" href="/admin/registro/alumno/{{ a.pk }}/change/">Editar</a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="6">No hay alumnos registrados.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+        <a class="btn-a" href="/admin/registro/alumno/add/">Registrar</a>
+{% endif %}
+
+
+<!-- TABLA DE PERSONAL -->
+{% if tab == "personal" %}
+    <table class="tabla-usuarios">
+        <thead>
+            <tr>
+            <th>ID</th><th>Nombre</th><th>Apellido</th><th>Área</th><th>Estado</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for p in personal %}
+            <tr>
+                <td>{{ p.IdPersonal }}</td>
+                <td>{{ p.NombrePersonal }}</td>
+                <td>{{ p.ApellidoPersonal }}</td>
+                <td>{{ p.AreaPersonal }}</td>
+                 <td>
+                {% if p.Activo %}
+                    <span class="estado activo">Activo</span>
+                {% else %}
+                    <span class="estado inactivo">Inactivo</span>
+                {% endif %}
+                </td>
+                <td>
+                <a class="btn-editar" href="/admin/registro/personal/{{ p.pk }}/change/">Editar</a>
+                </td>
+            </tr>
+        {% empty %}
+            <tr><td colspan="4">No hay personal registrado.</td></tr>
+        {% endfor %}
+        </tbody>
+        
+    </table>
+
+    <a class="btn-a" href="/admin/registro/personal/add/">Registrar</a>
+{% endif %}
+
+{% endblock %}

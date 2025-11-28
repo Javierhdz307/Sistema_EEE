@@ -1,0 +1,138 @@
+{% extends 'base/home.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block title %}<title>Citas</title>
+{% endblock %} 
+{% block content %}
+    <h2>CITAS</h2>
+    <p>Vista donde podra agendar y visualizar citas programadas</p>
+{% endblock %}
+{% block modulo %}
+<div class="contenedor2">
+    <div class="cita-btns">
+        <li class="button {% if modo == 'agendar' %}active{% endif %}">
+            <a href="?modo=agendar"><label>Agendar Cita</label></a>
+        </li>
+        <li class="button {% if modo == 'listar' %}active{% endif %}">
+            <a href="?modo=listar" ><label>Ver Citas Programadas</label></a>
+        </li>
+    </div>
+    
+    <div class="contenedor-citas">
+    {% if modo == "agendar" %}
+    <h2>Agendar Cita</h2>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <div class="cita-grid">
+
+            <!-- IZQUIERDA -->
+            <div class="lado-izq">
+
+                <h3>Alumno</h3>
+                <!-- Buscar alumno -->
+                <label for="id_alumno">(ID o Nombre)</label>
+                {{ form.alumno|add_class:"btn-editar" }}
+                <!-- Datos mostrados automáticamente -->
+                <div id="datos-alumno" class="datos-box">
+                    <label>ID:</label>
+                    <input type="text" id="alumno-id" class="btn-editar" disabled>
+                    <div class="fila-dos">
+                        <div>
+                            <label>Nombre:</label>
+                            <input type="text" id="alumno-nombre" class="btn-editar" disabled>
+                        </div>
+                        <div>
+                            <label>Apellido:</label>
+                            <input type="text" id="alumno-apellido" class="btn-editar" disabled>
+                        </div>
+                    </div>
+                    <div class="fila-unica">
+                            <label>Edad:</label>
+                            <input type="text" id="alumno-edad" class="btn-editar" disabled>
+                    </div>
+                </div>
+                <hr>
+                <div class="fila-dos">
+                    <div>
+                        <label>Encargado:</label>
+                        <input type="text" id="alumno-encargado" class="btn-editar" disabled>
+                    </div>
+                </div>
+                <label>Número de contacto:</label>
+                <input type="text" name="encargado_telefono" class="btn-editar">
+                <label>Correo electrónico:</label>
+                <input type="email" name="encargado_correo" class="btn-editar">
+            </div>
+
+            <!-- DERECHA -->
+            <div class="lado-der">
+                <label for="id_personal">Asignar Especialista (ID o nombre):</label>
+                {{ form.personal|add_class:"input-text" }}
+                <div>
+                    <label>Nombre:</label>
+                    <input type="text" id="personal-nombre" class="btn-editar" disabled>
+                </div>
+                <div>
+                    <label>Apellido:</label>
+                    <input type="text" id="personal-apellido" class="btn-editar" disabled>
+                </div>
+                <h3>Fecha</h3>
+                {{ form.fecha|add_class:"btn-editar" }}
+                <h3>Hora</h3>
+                {{ form.hora|add_class:"btn-editar" }}
+                <h3>Tipo de examen</h3>
+                {{ form.examen|add_class:"btn-editar" }}
+                <button type="submit" class="btn-agendar">
+                    Agendar Cita
+                </button>
+            </div>
+        </div>
+
+    </form>
+
+    </div>
+    {% else %}
+    <h2 class="titulo-modulo">Citas Programadas</h2>
+        <!-- FILTROS -->
+        <form method="GET" class="filtros-form">
+            <input type="hidden" name="modo" value="listar">
+            <input type="date" name="fecha" value="{{ fecha }}" class="filtro-input">
+            <input type="time" name="hora" value="{{ hora }}" class="filtro-input">
+            <input type="text" name="alumno" placeholder="Alumno" value="{{ alumno }}" class="filtro-input">
+            <input type="text" name="personal" placeholder="ID Personal" value="{{ personal }}" class="filtro-input">
+            <button type="submit" class="button">
+                <label>Filtrar</label>
+            </button>
+        </form>
+
+        <!-- TABLA -->
+        <table class="tabla-citas">
+            <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Hora</th>
+                    <th>Alumno</th>
+                    <th>Especialista</th>
+                    <th>Examen</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for c in citas %}
+                <tr>
+                    <td>{{ c.fecha }}</td>
+                    <td>{{ c.hora }}</td>
+                    <td>{{ c.alumno.NombreAlumno }} {{ c.alumno.ApellidoAlumno }}</td>
+                    <td>{{ c.personal.NombrePersonal }} {{ c.personal.ApellidoPersonal }}</td>
+                    <td>{{ c.examen }}</td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="5">No hay citas programadas.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+</div>
+{% endblock %}

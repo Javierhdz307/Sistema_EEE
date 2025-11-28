@@ -1,0 +1,41 @@
+{% load static %}
+{% load widget_tweaks %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" type="text/css" href="{% static '/css/estilos.css' %}">
+</head>
+
+<body class="body-login">
+
+    <div class="login-container">
+
+        <h2 class="login-title">LOGIN</h2>
+
+        <form method="post">
+            {% csrf_token %}
+
+            <label class="login-label">Usuario</label>
+            {{ form.username|add_class:"login-input" }}
+
+            <label class="login-label">Contraseña</label>
+            {{ form.password|add_class:"login-input" }}
+
+            <button type="submit" class="button">
+                <label>Ingresar</label>
+            </button>
+
+            {% if form.errors %}
+                <p style="color: red; margin-top: 1rem;">
+                    Usuario o contraseña incorrectos.
+                </p>
+            {% endif %}
+        </form>
+
+    </div>
+
+</body>
+</html>
