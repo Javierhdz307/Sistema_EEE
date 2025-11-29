@@ -16,3 +16,8 @@ try:
         print("El superusuario ya existe.")
 except IntegrityError:
     print("Error al crear el superusuario.")
+    from django.contrib.auth import get_user_model
+
+User = get_user_model()
+
+print("Usuarios en la BD:", list(User.objects.values("id", "username")))
