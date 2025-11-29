@@ -8,7 +8,7 @@ try:
         User.objects.create_superuser(
             username="admin",
             email="admin@example.com",
-            password="Admin12345"
+            password="Admin12345",
             is_active=True
         )
         print("Superusuario creado.")
