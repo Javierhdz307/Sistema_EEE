@@ -9,6 +9,7 @@ try:
             username="admin",
             email="admin@example.com",
             password="Admin12345"
+            is_active=True
         )
         print("Superusuario creado.")
     else:
