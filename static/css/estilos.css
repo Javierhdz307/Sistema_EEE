@@ -330,9 +330,20 @@ th { background:var(--neutral-color); }
     margin-top: 30px;
 }
 
-.datos-box input {
-    background: var(--neutral-color);
+.alumno-card {
+    padding: 15px;
+    margin-bottom: 20px;
+    background: #f7f7f7;
+    border-radius: 8px;
 }
+
+.label {
+    font-weight: bold;
+    margin: 0;
+    font-size: 14px;
+    color: #555;
+}
+
 /*End Modulo Citas*/
 /*Modulo Usuario*/
 .cita-btns{

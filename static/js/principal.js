@@ -91,3 +91,8 @@ document.getElementById("buscarAlumno").addEventListener("input", function() {
             });
         });
 });
+function filtrarPorAlumno(id) {
+    const url = new URL(window.location.href);
+    url.searchParams.set("alumno", id);
+    window.location.href = url.toString();
+}

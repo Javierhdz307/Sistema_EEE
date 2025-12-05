@@ -36,35 +36,20 @@
                 <label for="id_alumno">(ID o Nombre)</label>
                 {{ form.alumno|add_class:"btn-editar" }}
                 <!-- Datos mostrados automáticamente -->
-                <div id="datos-alumno" class="datos-box">
-                    <label>ID:</label>
-                    <input type="text" id="alumno-id" class="btn-editar" disabled>
-                    <div class="fila-dos">
-                        <div>
-                            <label>Nombre:</label>
-                            <input type="text" id="alumno-nombre" class="btn-editar" disabled>
-                        </div>
-                        <div>
-                            <label>Apellido:</label>
-                            <input type="text" id="alumno-apellido" class="btn-editar" disabled>
-                        </div>
-                    </div>
-                    <div class="fila-unica">
-                            <label>Edad:</label>
-                            <input type="text" id="alumno-edad" class="btn-editar" disabled>
-                    </div>
+                {% for a in alumnos %}
+                <div class="alumno-card">
+                    <p class="label">Nombre del alumno</p>
+                    <p class="btn-editar">{{ a.NombreAlumno }} {{ a.ApellidoAlumno }}</p>
+
+                    <p class="label">Edad</p>
+                    <p class="btn-editar">{{ a.EdadAlumno }}</p>
+
+                    <p class="label">Encargado</p>
+                    <p class="btn-editar">{{ a.EncargadoAlumno }}</p>
+
+                    <hr>
                 </div>
-                <hr>
-                <div class="fila-dos">
-                    <div>
-                        <label>Encargado:</label>
-                        <input type="text" id="alumno-encargado" class="btn-editar" disabled>
-                    </div>
-                </div>
-                <label>Número de contacto:</label>
-                <input type="text" name="encargado_telefono" class="btn-editar">
-                <label>Correo electrónico:</label>
-                <input type="email" name="encargado_correo" class="btn-editar">
+                {% endfor %}
             </div>
 
             <!-- DERECHA -->

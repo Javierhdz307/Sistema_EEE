@@ -117,20 +117,24 @@ class CitasView(LoginRequiredMixin,TemplateView):
             "errores": form.errors
         })
         
-def alumno_info(request):
-    alumno_id = request.GET.get("id")
-    try:
-        alumno = Alumno.objects.get(pk=alumno_id)
-    except Alumno.DoesNotExist:
-        return JsonResponse({"error": "Alumno no encontrado"})
+def seleccionar_alumno(request):
+    form = AlumnoForm()
 
-    return JsonResponse({
-        "id": alumno.IdAlumno,
-        "nombre": alumno.NombreAlumno,
-        "apellido": alumno.ApellidoAlumno,
-        "edad": alumno.EdadAlumno,
-        "encargado": alumno.EncargadoAlumno,
-    })
+    alumno_id = request.GET.get("alumno")
+
+    alumnos = Alumno.objects.all()
+
+    if alumno_id:
+        alumnos = alumnos.filter(id=alumno_id)
+
+    context = {
+        "form": form,
+        "alumnos": alumnos,
+        "alumno_id": alumno_id,
+    }
+
+    return render(request, "citas.html", context)
+
 #vista examenes
 class ExamenesView(LoginRequiredMixin,TemplateView):
     template_name= 'paginas/examenes.html'
