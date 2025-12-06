@@ -22,61 +22,22 @@ class HomeView(LoginRequiredMixin,TemplateView):
     login_url = 'login'
     redirect_field_name = 'redirect_to'
 #vista citas
-class CitasView(LoginRequiredMixin,TemplateView):
-    template_name= 'paginas/citas.html'
+class CitasView(LoginRequiredMixin, TemplateView):
+    template_name = 'paginas/citas.html'
     login_url = 'login'
     redirect_field_name = 'redirect_to'
+
     def get(self, request):
+        modo = request.GET.get("modo", "agendar")
+
+        # Form principal para agendar
         form = CitaForm()
 
-        alumno_id = request.GET.get("alumno")  # lo que el usuario escribió
-        alumno = None
-
-        if alumno_id:
-            alumno = Alumno.objects.filter(IdAlumno__icontains=alumno_id).first()
-
-        return render(request, self.template_name, {
-            "form": form,
-            "alumno": alumno,
-        })
-
-    def post(self, request):
-        alumno_id_real = request.POST.get("alumno_id")  # hidden
-        alumno = get_object_or_404(Alumno, IdAlumno=alumno_id_real)
-
-        form = CitaForm(request.POST)
-        if form.is_valid():
-            cita = form.save(commit=False)
-            cita.alumno = alumno
-            cita.save()
-            return redirect("citas")
-
-        return render(request, self.template_name, {
-            "form": form,
-            "alumno": alumno,
-            "errores": form.errors
-        })
-    
-    def get(self, request, *args, **kwargs):
-        form = CitaForm()
-        return render(request, self.template_name, {"form": form})
-
-    def post(self, request, *args, **kwargs):
-        form = CitaForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('citas')
-
-        return render(request, self.template_name, {"form": form})
-    
-    def get(self, request):
-        modo = request.GET.get("modo", "agendar")  # default agendar
-
-        # --- FILTROS ---
+        # ---------------- FILTROS PARA LISTAR ----------------
         fecha = request.GET.get("fecha")
         hora = request.GET.get("hora")
-        alumno = request.GET.get("alumno")
-        personal = request.GET.get("personal")
+        alumno_filtro = request.GET.get("alumno")
+        personal_filtro = request.GET.get("personal")
 
         citas = Cita.objects.all().order_by("fecha", "hora")
 
@@ -84,57 +45,46 @@ class CitasView(LoginRequiredMixin,TemplateView):
             citas = citas.filter(fecha=fecha)
         if hora:
             citas = citas.filter(hora=hora)
-        if alumno:
-            citas = citas.filter(alumno__IdAlumno__icontains=alumno)
-        if personal:
-            citas = citas.filter(personal__IdPersonal__icontains=personal)
+        if alumno_filtro:
+            citas = citas.filter(alumno__IdAlumno__icontains=alumno_filtro)
+        if personal_filtro:
+            citas = citas.filter(personal__IdPersonal__icontains=personal_filtro)
 
-        form = CitaForm()
+        # ---------------- BÚSQUEDA DE ALUMNO PARA AGENDAR ----------------
+        alumnos = None
+        alumno_query = request.GET.get("alumno_buscar")
+
+        if alumno_query:
+            alumnos = Alumno.objects.filter(
+                IdAlumno__icontains=alumno_query
+            ) | Alumno.objects.filter(
+                NombreAlumno__icontains=alumno_query
+            )
 
         return render(request, self.template_name, {
             "modo": modo,
             "form": form,
             "citas": citas,
+            "alumnos": alumnos,
             "fecha": fecha or "",
             "hora": hora or "",
-            "alumno": alumno or "",
-            "personal": personal or "",
+            "alumno": alumno_filtro or "",
+            "personal": personal_filtro or "",
+            "alumno_query": alumno_query or "",
         })
 
     def post(self, request):
         form = CitaForm(request.POST)
+
         if form.is_valid():
             form.save()
-            return render(request, self.template_name, {
-                "modo": "agendar",
-                "form": CitaForm(),
-                "mensaje": "Cita agendada correctamente"
-            })
+            return redirect("citas")
 
         return render(request, self.template_name, {
             "modo": "agendar",
             "form": form,
             "errores": form.errors
         })
-        
-def seleccionar_alumno(request):
-    form = AlumnoForm()
-
-    alumno_id = request.GET.get("alumno")
-
-    alumnos = Alumno.objects.all()
-
-    if alumno_id:
-        alumnos = alumnos.filter(id=alumno_id)
-
-    context = {
-        "form": form,
-        "alumnos": alumnos,
-        "alumno_id": alumno_id,
-    }
-
-    return render(request, "citas.html", context)
-
 #vista examenes
 class ExamenesView(LoginRequiredMixin,TemplateView):
     template_name= 'paginas/examenes.html'

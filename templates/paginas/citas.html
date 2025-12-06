@@ -33,8 +33,11 @@
 
                 <h3>Alumno</h3>
                 <!-- Buscar alumno -->
-                <label for="id_alumno">(ID o Nombre)</label>
-                {{ form.alumno|add_class:"btn-editar" }}
+                <form method="GET">
+                <input type="hidden" name="modo" value="agendar">
+                <input type="text" name="alumno_buscar" placeholder="Buscar alumno..." value="{{ alumno_query }}">
+                <button type="submit">Buscar</button>
+                </form>
                 <!-- Datos mostrados automáticamente -->
                 {% for a in alumnos %}
                 <div class="alumno-card">
