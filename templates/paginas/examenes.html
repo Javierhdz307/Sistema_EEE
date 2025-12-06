@@ -8,8 +8,6 @@
 {% endblock %}
 {% block modulo %}
 <div class="contenedor2">
-    <h2>Registrar Examen</h2>
-
     <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
 
@@ -19,48 +17,23 @@
         {{ form.personal.label }}<br>
         {{ form.personal }}<br><br>
 
-        Tipo de examen<br>
+        {{ form.tipo_examen.label }}<br>
         {{ form.tipo_examen }}<br><br>
 
-        Fecha del examen<br>
+        {{ form.fecha_realizado.label }}<br>
         {{ form.fecha_realizado }}<br><br>
 
-        Hora del examen<br>
+        {{ form.hora_realizado.label }}<br>
         {{ form.hora_realizado }}<br><br>
 
-        Archivo del examen<br>
+        {{ form.archivo_examen.label }}<br>
         {{ form.archivo_examen }}<br><br>
 
-        Observaciones<br>
+        {{ form.observaciones.label }}<br>
         {{ form.observaciones }}<br><br>
 
         <button class="button" type="submit">Actualizar</button>
     </form>
 </div>
-<hr><br>
 
-    <h2>Exámenes realizados</h2>
-
-    <table>
-        <tr>
-            <th>Alumno</th>
-            <th>Personal</th>
-            <th>Tipo</th>
-            <th>Fecha</th>
-            <th>Hora</th>
-            <th>Archivo</th>
-        </tr>
-        {% for examen in examenes %}
-        <tr>
-            <td>{{ examen.alumno.nombre }} {{ examen.alumno.apellido }}</td>
-            <td>{{ examen.personal }}</td>
-            <td>{{ examen.tipo_examen }}</td>
-            <td>{{ examen.fecha_realizado }}</td>
-            <td>{{ examen.hora_realizado }}</td>
-            <td>
-                <a href="{{ examen.archivo_examen.url }}" class="button" download>Descargar</a>
-            </td>
-        </tr>
-        {% endfor %}
-    </table>
 {% endblock %}

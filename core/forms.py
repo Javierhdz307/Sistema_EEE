@@ -42,8 +42,20 @@ class CitaForm(forms.ModelForm):
 class ExamenForm(forms.ModelForm):
     class Meta:
         model = Examen
-        fields = ['alumno', 'personal', 'tipo_examen','fecha_realizado', 'hora_realizado', 'archivo_examen', 'observaciones']
-        
+        fields = ['alumno', 'personal', 'tipo_examen',
+                  'fecha_realizado', 'hora_realizado',
+                  'archivo_examen', 'observaciones','estado']
+
+        widgets = {
+            'alumno': forms.Select(attrs={'class': 'btn-editar'}),
+            'personal': forms.Select(attrs={'class': 'btn-editar'}),
+            'tipo_examen': forms.Select(attrs={'class': 'btn-editar'}),
+            'fecha_realizado': forms.DateInput(attrs={'type': 'date','class': 'btn-editar'}),
+            'hora_realizado': forms.TimeInput(attrs={'type': 'time','class': 'btn-editar'}),
+            'archivo_examen': forms.ClearableFileInput(attrs={'class': 'btn-editar'}),
+            'observaciones': forms.Textarea(attrs={'class': 'btn-editar'}),
+            'estado': forms.Select(attrs={'class': 'btn-editar'}),
+        }
 class PAEIForm(forms.ModelForm):
     class Meta:
         model = PAEI

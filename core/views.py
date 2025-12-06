@@ -102,9 +102,12 @@ class ExamenesView(LoginRequiredMixin,TemplateView):
     def post(self, request):
         form = ExamenForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
-            return redirect('examenes')
+            examen = form.save(commit=False)
+            examen.actualizar_estado()
+            examen.save()
+        return redirect('examenes')
 
+    
         examenes = Examen.objects.all().order_by('-fecha_realizado')
         return render(request, self.template_name, {
             "form": form,
