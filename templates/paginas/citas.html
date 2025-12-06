@@ -21,8 +21,6 @@
     
     <div class="contenedor-citas">
     {% if modo == "agendar" %}
-            <h2>Agendar Cita</h2>
-
         <!-- IZQUIERDA -->
         <div class="lado-izq">
              <!-- BUSCAR ALUMNO -->
@@ -37,8 +35,6 @@
             <form method="POST">
             {% csrf_token %}
 
-            <div class="cita-grid">
-            <h3>Alumno seleccionado</h3>
             {% if alumnos %}
                 {% for a in alumnos %}
                 <div class="alumno-card">
@@ -58,11 +54,11 @@
             {% else %}
                 <p>No hay alumno seleccionado. Use el buscador de arriba.</p>
             {% endif %}
-            </div>
+
         </div>
 
         <!-- DERECHA -->
-        <div class="lado-der">
+        <div class="lado-izq">
 
             <label for="id_personal">Especialista:</label>
             {{ form.personal|add_class:"input-text" }}
