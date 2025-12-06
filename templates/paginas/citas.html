@@ -21,7 +21,7 @@
     
     <div class="contenedor-citas">
     {% if modo == "agendar" %}
-    <h2>Agendar Cita</h2>
+            <h2>Agendar Cita</h2>
 
         <!-- IZQUIERDA -->
         <div class="lado-izq">
@@ -34,13 +34,11 @@
            value="{{ alumno_query }}">
             <button type="submit" class="btn-agendar">Buscar</button>
             </form>
-    <form method="POST">
-    {% csrf_token %}
+            <form method="POST">
+            {% csrf_token %}
 
-    <div class="cita-grid">
-
+            <div class="cita-grid">
             <h3>Alumno seleccionado</h3>
-
             {% if alumnos %}
                 {% for a in alumnos %}
                 <div class="alumno-card">
