@@ -18,9 +18,8 @@
             <a href="?modo=listar" ><label>Ver Citas Programadas</label></a>
         </li>
     </div>
-    
-    <div class="contenedor-citas">
     {% if modo == "agendar" %}
+    <div class="contenedor-citas">
         <!-- IZQUIERDA -->
         <div class="lado-izq">
              <!-- BUSCAR ALUMNO -->
@@ -60,17 +59,25 @@
         <!-- DERECHA -->
         <div class="lado-izq">
 
-            <label for="id_personal">Especialista:</label>
-            {{ form.personal|add_class:"input-text" }}
+            <div class="campo">
+                <label for="id_personal">Especialista:</label>
+                {{ form.personal|add_class:"input-text" }}
+            </div>
 
-            <label for="id_fecha">Fecha:</label>
-            {{ form.fecha|add_class:"btn-editar" }}
+            <div class="campo">
+                <label for="id_fecha">Fecha:</label>
+                {{ form.fecha|add_class:"btn-editar" }}
+            </div>
 
-            <label for="id_hora">Hora:</label>
-            {{ form.hora|add_class:"btn-editar" }}
+            <div class="campo">
+                <label for="id_hora">Hora:</label>
+                {{ form.hora|add_class:"btn-editar" }}
+            </div>
 
-            <label for="id_examen">Tipo de examen:</label>
-            {{ form.examen|add_class:"btn-editar" }}
+            <div class="campo">
+                <label for="id_examen">Tipo de examen:</label>
+                {{ form.examen|add_class:"btn-editar" }}
+            </div>
 
             <button type="submit" class="btn-agendar">Agendar Cita</button>
         </div>
@@ -78,7 +85,6 @@
 
     </div>
     {% else %}
-    <h2 class="titulo-modulo">Citas Programadas</h2>
         <!-- FILTROS -->
         <form method="GET" class="filtros-form">
             <input type="hidden" name="modo" value="listar">

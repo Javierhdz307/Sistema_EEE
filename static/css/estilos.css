@@ -318,7 +318,6 @@ th { background:var(--neutral-color); }
 }
 
 .btn-agendar {
-    width: 100%;
     padding: 12px;
     background: var(--primary-color500);
     color: var(--neutral-color);
@@ -338,7 +337,15 @@ th { background:var(--neutral-color); }
     font-size: 14px;
     color: #555;
 }
+.campo {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 12px;
+}
 
+.campo label {
+    margin-bottom: 4px;
+}
 /*End Modulo Citas*/
 /*Modulo Usuario*/
 .cita-btns{
