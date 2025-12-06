@@ -23,22 +23,26 @@
     {% if modo == "agendar" %}
     <h2>Agendar Cita</h2>
 
+    <!-- BUSCAR ALUMNO -->
+<form method="GET" class="buscar-alumno-form">
+    <input type="hidden" name="modo" value="agendar">
+    <label>Buscar alumno (ID o nombre):</label>
+    <input type="text" name="alumno_buscar" class="btn-editar"
+           placeholder="ID o Nombre"
+           value="{{ alumno_query }}">
+    <button type="submit" class="btn-agendar">Buscar</button>
+</form>
     <form method="POST">
-        {% csrf_token %}
+    {% csrf_token %}
 
-        <div class="cita-grid">
+    <div class="cita-grid">
 
-            <!-- IZQUIERDA -->
-            <div class="lado-izq">
+        <!-- IZQUIERDA -->
+        <div class="lado-izq">
 
-                <h3>Alumno</h3>
-                <!-- Buscar alumno -->
-                <form method="GET">
-                <input type="hidden" name="modo" value="agendar">
-                <input type="text" name="alumno_buscar" placeholder="Buscar alumno..." value="{{ alumno_query }}">
-                <button type="submit">Buscar</button>
-                </form>
-                <!-- Datos mostrados automáticamente -->
+            <h3>Alumno seleccionado</h3>
+
+            {% if alumnos %}
                 {% for a in alumnos %}
                 <div class="alumno-card">
                     <p class="label">Nombre del alumno</p>
@@ -50,35 +54,34 @@
                     <p class="label">Encargado</p>
                     <p class="btn-editar">{{ a.EncargadoAlumno }}</p>
 
-                    <hr>
+                    <!-- Guardar el alumno elegido -->
+                    <input type="hidden" name="alumno" value="{{ a.id }}">
                 </div>
                 {% endfor %}
-            </div>
-
-            <!-- DERECHA -->
-            <div class="lado-der">
-                <label for="id_personal">Asignar Especialista (ID o nombre):</label>
-                {{ form.personal|add_class:"input-text" }}
-                <div>
-                    <label>Nombre:</label>
-                    <input type="text" id="personal-nombre" class="btn-editar" disabled>
-                </div>
-                <div>
-                    <label>Apellido:</label>
-                    <input type="text" id="personal-apellido" class="btn-editar" disabled>
-                </div>
-                <h3>Fecha</h3>
-                {{ form.fecha|add_class:"btn-editar" }}
-                <h3>Hora</h3>
-                {{ form.hora|add_class:"btn-editar" }}
-                <h3>Tipo de examen</h3>
-                {{ form.examen|add_class:"btn-editar" }}
-                <button type="submit" class="btn-agendar">
-                    Agendar Cita
-                </button>
-            </div>
+            {% else %}
+                <p>No hay alumno seleccionado. Use el buscador de arriba.</p>
+            {% endif %}
         </div>
 
+        <!-- DERECHA -->
+        <div class="lado-der">
+
+            <label for="id_personal">Especialista:</label>
+            {{ form.personal }}
+
+            <label for="id_fecha">Fecha:</label>
+            {{ form.fecha }}
+
+            <label for="id_hora">Hora:</label>
+            {{ form.hora }}
+
+            <label for="id_examen">Tipo de examen:</label>
+            {{ form.examen }}
+
+            <button type="submit" class="btn-agendar">Agendar Cita</button>
+        </div>
+
+    </div>
     </form>
 
     </div>
