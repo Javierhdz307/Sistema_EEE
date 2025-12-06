@@ -289,7 +289,6 @@ th { background:var(--neutral-color); }
     padding-top: 1rem;
 }
 .contenedor-citas {
-    width: 90%;
     margin: auto;
     background: var(--neutral-color);
     padding: 25px;
@@ -333,7 +332,6 @@ th { background:var(--neutral-color); }
 .alumno-card {
     padding: 15px;
     margin-bottom: 20px;
-    background: #f7f7f7;
     border-radius: 8px;
 }
 
