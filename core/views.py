@@ -86,8 +86,8 @@ class CitasView(LoginRequiredMixin, TemplateView):
             "errores": form.errors
         })
 #vista examenes
-class ExamenesView(LoginRequiredMixin,TemplateView):
-    template_name= 'paginas/examenes.html'
+class ExamenesView(LoginRequiredMixin, TemplateView):
+    template_name = 'paginas/examenes.html'
     login_url = 'login'
     redirect_field_name = 'redirect_to'
     
@@ -101,14 +101,15 @@ class ExamenesView(LoginRequiredMixin,TemplateView):
 
     def post(self, request):
         form = ExamenForm(request.POST, request.FILES)
+        
         if form.is_valid():
             examen = form.save(commit=False)
             examen.actualizar_estado()
             examen.save()
-        return redirect('examenes')
-
-    
-        examenes = Examen.objects.all().order_by('-fecha_realizado')
+            return redirect('examenes')   # SOLO si guardó bien
+        
+        # SI LLEGA AQUÍ ES PORQUE HAY ERRORES
+        examenes = Examen.objects.all().order_by('-fecha_realizado', '-hora_realizado')
         return render(request, self.template_name, {
             "form": form,
             "examenes": examenes,
