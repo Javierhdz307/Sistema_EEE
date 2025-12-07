@@ -8,8 +8,6 @@
 {% endblock %}
 {% block modulo %}
 <div class="contenedor2">
-    <h2>Reportes</h2>
-
     <label for="buscarAlumno">Buscar alumno:</label>
     <input type="text" id="buscarAlumno" class="form-control" placeholder="Escribe el nombre">
 
@@ -30,6 +28,7 @@
             <th>Tipo</th>
             <th>Fecha</th>
             <th>Personal</th>
+            <th>Estado</th>
             <th>Archivo</th>
         </tr>
     </thead>
@@ -41,6 +40,16 @@
             <td>{{ item.fecha }}</td>
             <td>{{ item.personal }}</td>
             <td>
+                {% if item.estado == "realizado" %}
+                    <span class="badge bg-success">Realizado</span>
+                {% elif item.estado == "pendiente" %}
+                    <span class="badge bg-warning">Pendiente</span>
+                {% else %}
+                    <span class="badge bg-danger">Desactualizado</span>
+                {% endif %}
+            </td>
+
+            <td>
                 {% if item.archivo %}
                     <a href="{{ item.archivo }}" download>Descargar</a>
                 {% else %}
@@ -50,7 +59,7 @@
         </tr>
         {% empty %}
         <tr>
-            <td colspan="4">No hay registros para este alumno.</td>
+            <td colspan="5">No hay registros para este alumno.</td>
         </tr>
         {% endfor %}
     </tbody>
