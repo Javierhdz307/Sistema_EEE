@@ -8,7 +8,7 @@ from Examenes.models import Examen, PAEI
 from .models import Cita
 from .forms import CitaForm, ExamenForm, PAEIForm
 from django.http import JsonResponse
-import json
+from django.db.models import Q
 # Si luego se agregan tablas y formularios ej:
 # from personal.models import Personal
 # from personal.forms import PersonalForm
@@ -142,49 +142,29 @@ class ReportesView(LoginRequiredMixin, TemplateView):
     login_url = 'login'
     redirect_field_name = 'redirect_to'
     
-    def get(self, request, *args, **kwargs):
+    def reportes(request):
+        query = request.GET.get("buscar")
 
-        alumno_id = request.GET.get("alumno_id")
-        historial = []
+        alumno = None
+        examenes = None
+        paei = None
 
-        # --- NUEVO: generar lista de alumnos para autocompletar ---
-        alumnos = list(
-            Alumno.objects.values(
-                "id", 
-                "NombreAlumno", 
-                "ApellidoAlumno"
-            )
-        )
-        alumnos_json = json.dumps(alumnos)
+        if query:
+            # buscar por ID o por nombre
+            alumno = Alumno.objects.filter(
+                Q(id__icontains=query) |
+                Q(NombreAlumno__icontains=query) |
+                Q(ApellidoAlumno__icontains=query)
+            ).first()
 
-        # --- Filtrar si se seleccionó alumno ---
-        if alumno_id:
-            examenes = Examen.objects.filter(alumno_id=alumno_id)
-            paei = PAEI.objects.filter(alumno_id=alumno_id)
+            if alumno:
+                examenes = Examen.objects.filter(alumno=alumno)
+                paei = PAEI.objects.filter(alumno=alumno).first()
 
-            for ex in examenes:
-                historial.append({
-                    "tipo": f"Examen - {ex.tipo_examen}",
-                    "fecha": ex.fecha_realizado,
-                    "personal": str(ex.personal),
-                    "archivo": ex.archivo_examen.url if ex.archivo_examen else None,
-                    "estado": ex.estado
-                })
-
-            for p in paei:
-                historial.append({
-                    "tipo": "PAEI",
-                    "fecha": p.fecha_realizado,
-                    "personal": str(p.personal),
-                    "archivo": p.archivo_paei.url if p.archivo_paei else None,
-                    "estado": getattr(p, "estado", "realizado"),
-                })
-
-            historial = sorted(historial, key=lambda x: x["fecha"], reverse=True)
-
-        return render(request, self.template_name, {
-            "historial": historial,
-            "alumnos_json": alumnos_json
+        return render(request, "reportes.html", {
+            "alumno": alumno,
+            "examenes": examenes,
+            "paei": paei,
         })
 #vista seguimiento
 class SeguimientoView(LoginRequiredMixin,TemplateView):

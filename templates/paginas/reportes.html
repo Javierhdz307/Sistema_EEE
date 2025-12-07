@@ -8,66 +8,56 @@
 {% endblock %}
 {% block modulo %}
 <div class="contenedor2">
-    <label for="buscarAlumno">Buscar alumno:</label>
-    <input type="text" id="buscarAlumno" class="btn-editar" placeholder="Escribe el nombre">
-
-    <div id="resultadosBusqueda" class="lista-resultados"></div>
-
-    <br>
-
-    <form method="GET" id="formFiltro">
-    <input type="hidden" name="alumno_id" id="alumno_id">
-    <button type="submit" class="btn-editar">Filtrar</button>
+    <form method="GET" action="{% url 'reportes' %}">
+    <input type="text" name="buscar" placeholder="Buscar alumno por nombre o ID">
+    <button type="submit" class="btn-agendar">Consultar</button>
     </form>
 
     <br><br>
 
-    <table class="table table-striped">
-    <thead>
-        <tr>
-            <th>Tipo</th>
-            <th>Fecha</th>
-            <th>Personal</th>
-            <th>Estado</th>
-            <th>Archivo</th>
-        </tr>
-    </thead>
+    <h3>Exámenes del alumno</h3>
 
-    <tbody>
-        {% for item in historial %}
-        <tr>
-            <td>{{ item.tipo }}</td>
-            <td>{{ item.fecha }}</td>
-            <td>{{ item.personal }}</td>
-            <td>
-                {% if item.estado == "realizado" %}
-                    <span class="estado activo">Realizado</span>
-                {% elif item.estado == "pendiente" %}
-                    <span class="estado inactivo">Pendiente</span>
-                {% else %}
-                    <span class="estado inactivo">Desactualizado</span>
-                {% endif %}
-            </td>
+    <table>
+        <thead>
+            <tr>
+                <th>Tipo</th>
+                <th>Fecha</th>
+                <th>Resultado</th>
+            </tr>
+        </thead>
 
-            <td>
-                {% if item.archivo %}
-                    <a href="{{ item.archivo }}" download>Descargar</a>
-                {% else %}
-                    Sin archivo
-                {% endif %}
-            </td>
-        </tr>
-        {% empty %}
-        <tr>
-            <td colspan="5">No hay registros para este alumno.</td>
-        </tr>
-        {% endfor %}
-    </tbody>
+        <tbody>
+            {% if examenes %}
+                {% for ex in examenes %}
+                <tr>
+                    <td>{{ ex.tipo }}</td>
+                    <td>{{ ex.fecha }}</td>
+                    <td>{{ ex.resultado }}</td>
+                </tr>
+                {% endfor %}
+            {% else %}
+                <tr>
+                    <td colspan="3">No hay exámenes para este alumno.</td>
+                </tr>
+            {% endif %}
+        </tbody>
     </table>
-
+    <h3>PAEI del alumno</h3>
+    <table>
+        <tbody>
+            {% if paei %}
+            <tr>
+                <td>PAEI</td>
+                <td>{{ paei.fecha }}</td>
+                <td><a href="{% url 'detalle_paei' paei.id %}">Ver detalles</a></td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="3">Este alumno no tiene PAEI registrado.</td>
+            </tr>
+            {% endif %}
+        </tbody>
+    </table>
 </div>
-<script>
-    const alumnosData = '{{ alumnos_json|escapejs }}';
-</script>  
 
 {% endblock %}
