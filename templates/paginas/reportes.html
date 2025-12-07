@@ -9,7 +9,7 @@
 {% block modulo %}
 <div class="contenedor2">
     <label for="buscarAlumno">Buscar alumno:</label>
-    <input type="text" id="buscarAlumno" class="form-control" placeholder="Escribe el nombre">
+    <input type="text" id="buscarAlumno" class="btn-editar" placeholder="Escribe el nombre">
 
     <div id="resultadosBusqueda" class="lista-resultados"></div>
 
@@ -17,7 +17,7 @@
 
     <form method="GET" id="formFiltro">
         <input type="hidden" name="alumno_id" id="alumno_id">
-        <button type="submit" class="btn btn-primary">Filtrar</button>
+        <button type="submit" class="btn-editar">Filtrar</button>
     </form>
 
     <br><br>
@@ -41,11 +41,11 @@
             <td>{{ item.personal }}</td>
             <td>
                 {% if item.estado == "realizado" %}
-                    <span class="badge bg-success">Realizado</span>
+                    <span class="estado activo">Realizado</span>
                 {% elif item.estado == "pendiente" %}
-                    <span class="badge bg-warning">Pendiente</span>
+                    <span class="estado inactivo">Pendiente</span>
                 {% else %}
-                    <span class="badge bg-danger">Desactualizado</span>
+                    <span class="estado inactivo">Desactualizado</span>
                 {% endif %}
             </td>
 
