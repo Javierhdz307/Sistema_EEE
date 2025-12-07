@@ -35,6 +35,12 @@ class Examen(models.Model):
             self.estado = 'realizado'
     
 class PAEI(models.Model):
+    ESTADOS = [
+        ("pendiente", "Pendiente"),
+        ("realizado", "Realizado"),
+        ("desactualizado", "Desactualizado"),
+    ]
+
     alumno = models.ForeignKey(Alumno, on_delete=models.CASCADE)
     personal = models.ForeignKey(Personal, on_delete=models.SET_NULL, null=True)
     fecha_realizado = models.DateField()
@@ -42,6 +48,24 @@ class PAEI(models.Model):
 
     archivo_paei = models.FileField(upload_to='paei/')
     observaciones = models.TextField(blank=True, null=True)
+
+    estado = models.CharField(
+        max_length=20,
+        choices=ESTADOS,
+        default="pendiente"
+    )
+
+    def actualizar_estado(self):
+        from datetime import date, timedelta
+
+        hoy = date.today()
+
+        if self.fecha_realizado == hoy:
+            self.estado = "realizado"
+        elif self.fecha_realizado < hoy - timedelta(days=180):
+            self.estado = "desactualizado"
+        else:
+            self.estado = "pendiente"
 
     def __str__(self):
         return f"PAEI - {self.alumno.NombreAlumno} {self.alumno.ApellidoAlumno}"

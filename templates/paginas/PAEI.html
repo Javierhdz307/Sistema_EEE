@@ -11,41 +11,28 @@
     <h2>Crear PAEI</h2>
 
     <form method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
+    {% csrf_token %}
 
-        <div>
-            <label>Alumno</label><br>
-            {{ form.alumno }}
-        </div><br>
+    <label>Alumno</label>
+    {{ form.alumno }}
 
-        <div>
-            <label>Personal encargado</label><br>
-            {{ form.personal }}
-        </div><br>
+    <label>Personal Encargado</label>
+    {{ form.personal }}
 
-        <div>
-            <label>Fecha realizado</label><br>
-            {{ form.fecha_realizado }}
-        </div><br>
+    <label>Fecha realizado</label>
+    {{ form.fecha_realizado }}
 
-        <div>
-            <label>Hora realizado</label><br>
-            {{ form.hora_realizado }}
-        </div><br>
+    <label>Hora realizado</label>
+    {{ form.hora_realizado }}
 
-        <div>
-            <label>Archivo PAEI (PDF)</label><br>
-            {{ form.archivo_paei }}
-        </div><br>
+    <label>Archivo PAEI (PDF)</label>
+    {{ form.archivo_paei }}
 
-        <div>
-            <label>Observaciones</label><br>
-            {{ form.observaciones }}
-        </div><br>
+    <label>Observaciones</label>
+    {{ form.observaciones }}
 
-        <button type="submit" class="button">Guardar PAEI</button>
-
-    </form>
+    <button type="submit" class="button">Guardar PAEI</button>
+</form>
 </div>
     
 {% endblock %}

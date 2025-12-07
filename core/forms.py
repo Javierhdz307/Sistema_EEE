@@ -57,6 +57,20 @@ class ExamenForm(forms.ModelForm):
             'estado': forms.Select(attrs={'class': 'btn-editar'}),
         }
 class PAEIForm(forms.ModelForm):
+    fecha_realizado = forms.DateField(
+        widget=forms.DateInput(attrs={
+            'type': 'date',
+            'class': 'btn-editar'
+        })
+    )
+
+    hora_realizado = forms.TimeField(
+        widget=forms.TimeInput(attrs={
+            'type': 'time',
+            'class': 'btn-editar'
+        })
+    )
+
     class Meta:
         model = PAEI
         fields = [
@@ -67,3 +81,9 @@ class PAEIForm(forms.ModelForm):
             'archivo_paei',
             'observaciones',
         ]
+        widgets = {
+            'alumno': forms.Select(attrs={'class': 'btn-editar'}),
+            'personal': forms.Select(attrs={'class': 'btn-editar'}),
+            'archivo_paei': forms.ClearableFileInput(attrs={'class': 'btn-editar'}),
+            'observaciones': forms.Textarea(attrs={'class': 'btn-editar'}),
+        }

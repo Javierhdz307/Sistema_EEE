@@ -116,8 +116,8 @@ class ExamenesView(LoginRequiredMixin,TemplateView):
         })
         
 #vista PAEI
-class PAEIView(LoginRequiredMixin,TemplateView):
-    template_name= 'paginas/PAEI.html'
+class PAEIView(LoginRequiredMixin, TemplateView):
+    template_name = 'paginas/PAEI.html'
     login_url = 'login'
     redirect_field_name = 'redirect_to'
     
@@ -128,8 +128,11 @@ class PAEIView(LoginRequiredMixin,TemplateView):
     def post(self, request, *args, **kwargs):
         form = PAEIForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
-            return redirect('PAEI')  # Regresa al menú de PAEI
+            paei = form.save(commit=False)
+            paei.actualizar_estado()
+            paei.save()
+            return redirect('PAEI')
+
         return render(request, self.template_name, {'form': form})
 #vista reportes
 class ReportesView(LoginRequiredMixin,TemplateView):
