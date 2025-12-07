@@ -16,8 +16,8 @@
     <br>
 
     <form method="GET" id="formFiltro">
-        <input type="hidden" name="alumno_id" id="alumno_id">
-        <button type="submit" class="btn-editar">Filtrar</button>
+    <input type="hidden" name="alumno_id" id="alumno_id">
+    <button type="submit" class="btn-editar">Filtrar</button>
     </form>
 
     <br><br>
@@ -64,6 +64,10 @@
         {% endfor %}
     </tbody>
     </table>
+
 </div>
-    
+<script>
+    const alumnosData = '{{ alumnos_json|escapejs }}';
+</script>  
+
 {% endblock %}
