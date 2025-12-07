@@ -14,15 +14,13 @@
     </form>
 
     <br><br>
-
-    <h3>Exámenes del alumno</h3>
-
     <table>
         <thead>
             <tr>
                 <th>Tipo</th>
                 <th>Fecha</th>
-                <th>Resultado</th>
+                <th>Estado</th>
+                <th>Archivo</th>
             </tr>
         </thead>
 
@@ -30,9 +28,10 @@
             {% if examenes %}
                 {% for ex in examenes %}
                 <tr>
-                    <td>{{ ex.tipo }}</td>
-                    <td>{{ ex.fecha }}</td>
-                    <td>{{ ex.resultado }}</td>
+                    <td>{{ ex.tipo_examen }}</td>
+                    <td>{{ ex.fecha_realizado }}</td>
+                    <td>{{ ex.estado }}</td>
+                    <td><a href="{{ ex.archivo_examen.url }}" download>Descargar</a></td>
                 </tr>
                 {% endfor %}
             {% else %}
@@ -42,14 +41,14 @@
             {% endif %}
         </tbody>
     </table>
-    <h3>PAEI del alumno</h3>
     <table>
         <tbody>
             {% if paei %}
             <tr>
                 <td>PAEI</td>
-                <td>{{ paei.fecha }}</td>
-                <td><a href="{% url 'detalle_paei' paei.id %}">Ver detalles</a></td>
+                <td>{{ paei.fecha_realizado }}</td>
+                <td>{{ paei.estado }}</td>
+                <td><a href="{{ paei.archivo_paei.url }}" download>Descargar</a></td>
             </tr>
             {% else %}
             <tr>
