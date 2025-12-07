@@ -9,7 +9,7 @@
 {% block modulo %}
 <div class="contenedor2">
     <form method="GET" action="{% url 'reportes' %}">
-    <input type="text" name="buscar" placeholder="Buscar alumno por nombre o ID">
+    <input type="text" name="buscar" placeholder="Buscar alumno por nombre o ID" class="btn-editar">
     <button type="submit" class="btn-agendar">Consultar</button>
     </form>
 
@@ -31,7 +31,7 @@
                     <td>{{ ex.tipo_examen }}</td>
                     <td>{{ ex.fecha_realizado }}</td>
                     <td>{{ ex.estado }}</td>
-                    <td><a href="{{ ex.archivo_examen.url }}" download>Descargar</a></td>
+                    <td><a class="btn-editar" href="{{ ex.archivo_examen.url }}" download>Descargar</a></td>
                 </tr>
                 {% endfor %}
             {% else %}
@@ -48,7 +48,7 @@
                 <td>PAEI</td>
                 <td>{{ paei.fecha_realizado }}</td>
                 <td>{{ paei.estado }}</td>
-                <td><a href="{{ paei.archivo_paei.url }}" download>Descargar</a></td>
+                <td><a class="btn-editar" href="{{ paei.archivo_paei.url }}" download>Descargar</a></td>
             </tr>
             {% else %}
             <tr>
