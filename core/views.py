@@ -142,15 +142,16 @@ class ReportesView(LoginRequiredMixin, TemplateView):
     login_url = 'login'
     redirect_field_name = 'redirect_to'
     
-    def reportes(request):
-        query = request.GET.get("buscar")
+    def get(self, request, *args, **kwargs):
+
+        query = request.GET.get("buscar", "").strip()
 
         alumno = None
         examenes = None
         paei = None
 
         if query:
-            # buscar por ID o por nombre
+            # Buscar por ID o nombre
             alumno = Alumno.objects.filter(
                 Q(id__icontains=query) |
                 Q(NombreAlumno__icontains=query) |
@@ -161,7 +162,7 @@ class ReportesView(LoginRequiredMixin, TemplateView):
                 examenes = Examen.objects.filter(alumno=alumno)
                 paei = PAEI.objects.filter(alumno=alumno).first()
 
-        return render(request, "reportes.html", {
+        return render(request, self.template_name, {
             "alumno": alumno,
             "examenes": examenes,
             "paei": paei,
