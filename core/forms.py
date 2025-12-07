@@ -44,7 +44,7 @@ class ExamenForm(forms.ModelForm):
         model = Examen
         fields = ['alumno', 'personal', 'tipo_examen',
                   'fecha_realizado', 'hora_realizado',
-                  'archivo_examen', 'observaciones','estado']
+                  'archivo_examen', 'observaciones']
 
         widgets = {
             'alumno': forms.Select(attrs={'class': 'btn-editar'}),
@@ -54,7 +54,6 @@ class ExamenForm(forms.ModelForm):
             'hora_realizado': forms.TimeInput(attrs={'type': 'time','class': 'btn-editar'}),
             'archivo_examen': forms.ClearableFileInput(attrs={'class': 'btn-editar'}),
             'observaciones': forms.Textarea(attrs={'class': 'btn-editar'}),
-            'estado': forms.Select(attrs={'class': 'btn-editar'}),
         }
 class PAEIForm(forms.ModelForm):
     fecha_realizado = forms.DateField(
