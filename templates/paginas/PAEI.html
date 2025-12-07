@@ -8,8 +8,6 @@
 {% endblock %}
 {% block modulo %}
 <div class="contenedor2">
-    <h2>Crear PAEI</h2>
-
     <form method="POST" enctype="multipart/form-data">
     {% csrf_token %}
 
@@ -32,7 +30,7 @@
     {{ form.observaciones }}
 
     <button type="submit" class="button">Guardar PAEI</button>
-</form>
+    </form>
 </div>
     
 {% endblock %}
