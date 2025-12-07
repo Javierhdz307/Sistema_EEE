@@ -139,6 +139,41 @@ class ReportesView(LoginRequiredMixin,TemplateView):
     template_name= 'paginas/reportes.html'
     login_url = 'login'
     redirect_field_name = 'redirect_to'
+    
+    def get(self, request):
+        alumno_id = request.GET.get("alumno_id", None)
+
+        historial = []
+
+        if alumno_id:
+            # 1. Obtener exámenes
+            examenes = Examen.objects.filter(alumno_id=alumno_id)
+            for e in examenes:
+                historial.append({
+                    "tipo": f"Examen - {e.tipo_examen}",
+                    "fecha": e.fecha_realizado,
+                    "personal": f"{e.personal.NombrePersonal} {e.personal.ApellidoPersonal}",
+                    "estado": e.estado,
+                    "archivo": e.archivo_examen.url if e.archivo_examen else None
+                })
+
+            # 2. Obtener PAEI
+            paei_list = PAEI.objects.filter(alumno_id=alumno_id)
+            for p in paei_list:
+                historial.append({
+                    "tipo": "PAEI",
+                    "fecha": p.fecha_realizado,
+                    "personal": f"{p.personal.NombrePersonal} {p.personal.ApellidoPersonal}",
+                    "estado": p.estado,
+                    "archivo": p.archivo_paei.url if p.archivo_paei else None
+                })
+
+        # Ordenar por fecha descendente
+        historial = sorted(historial, key=lambda x: x['fecha'], reverse=True)
+
+        return render(request, self.template_name, {
+            "historial": historial
+        })
 #vista seguimiento
 class SeguimientoView(LoginRequiredMixin,TemplateView):
     template_name= 'paginas/seguimiento.html'

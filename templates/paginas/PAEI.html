@@ -8,29 +8,62 @@
 {% endblock %}
 {% block modulo %}
 <div class="contenedor2">
-    <form method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
+    <label for="buscarAlumno">Buscar alumno:</label>
+    <input type="text" id="buscarAlumno" class="form-control" placeholder="Escribe el nombre">
 
-    <label>Alumno</label><br>
-    {{ form.alumno }}<br><br>
+    <div id="resultadosBusqueda" class="lista-resultados"></div>
 
-    <label>Personal Encargado</label><br>
-    {{ form.personal }}<br><br>
+    <br>
 
-    <label>Fecha realizado</label><br>
-    {{ form.fecha_realizado }}<br><br>
-
-    <label>Hora realizado</label><br>
-    {{ form.hora_realizado }}<br><br>
-
-    <label>Archivo PAEI (PDF)</label><br>
-    {{ form.archivo_paei }}<br><br>
-
-    <label>Observaciones</label><br>
-    {{ form.observaciones }}<br><br>
-
-    <button type="submit" class="button">Guardar PAEI</button>
+    <form method="GET" id="formFiltro">
+        <input type="hidden" name="alumno_id" id="alumno_id">
+        <button type="submit" class="btn btn-primary">Filtrar</button>
     </form>
+
+    <br><br>
+
+    <table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Tipo</th>
+            <th>Fecha</th>
+            <th>Personal</th>
+            <th>Estado</th>
+            <th>Archivo</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for item in historial %}
+        <tr>
+            <td>{{ item.tipo }}</td>
+            <td>{{ item.fecha }}</td>
+            <td>{{ item.personal }}</td>
+            <td>
+                {% if item.estado == "realizado" %}
+                    <span class="badge bg-success">Realizado</span>
+                {% elif item.estado == "pendiente" %}
+                    <span class="badge bg-warning">Pendiente</span>
+                {% else %}
+                    <span class="badge bg-danger">Desactualizado</span>
+                {% endif %}
+            </td>
+
+            <td>
+                {% if item.archivo %}
+                    <a href="{{ item.archivo }}" download>Descargar</a>
+                {% else %}
+                    Sin archivo
+                {% endif %}
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="5">No hay registros para este alumno.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+    </table>
 </div>
     
 {% endblock %}
