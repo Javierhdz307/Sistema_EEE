@@ -11,23 +11,23 @@
     <form method="POST" enctype="multipart/form-data">
     {% csrf_token %}
 
-    <label>Alumno</label>
-    {{ form.alumno }}
+    <label>Alumno</label><br>
+    {{ form.alumno }}<br><br>
 
-    <label>Personal Encargado</label>
-    {{ form.personal }}
+    <label>Personal Encargado</label><br>
+    {{ form.personal }}<br><br>
 
-    <label>Fecha realizado</label>
-    {{ form.fecha_realizado }}
+    <label>Fecha realizado</label><br>
+    {{ form.fecha_realizado }}<br><br>
 
-    <label>Hora realizado</label>
-    {{ form.hora_realizado }}
+    <label>Hora realizado</label><br>
+    {{ form.hora_realizado }}<br><br>
 
-    <label>Archivo PAEI (PDF)</label>
-    {{ form.archivo_paei }}
+    <label>Archivo PAEI (PDF)</label><br>
+    {{ form.archivo_paei }}<br><br>
 
-    <label>Observaciones</label>
-    {{ form.observaciones }}
+    <label>Observaciones</label><br>
+    {{ form.observaciones }}<br><br>
 
     <button type="submit" class="button">Guardar PAEI</button>
     </form>
