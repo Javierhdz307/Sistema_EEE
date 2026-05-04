@@ -38,6 +38,12 @@ class HomeView(LoginRequiredMixin,TemplateView):
     template_name= 'base/home.html'
     login_url = 'login'
     redirect_field_name = 'redirect_to'
+def get(self, request, *args, **kwargs):
+    es_encargado = request.user.groups.filter(name='Encargados').exists()
+    
+    return render(request, self.template_name, {
+        'es_encargado': es_encargado
+    })
 #vista citas
 class CitasView(LoginRequiredMixin, TemplateView):
     template_name = 'paginas/citas.html'

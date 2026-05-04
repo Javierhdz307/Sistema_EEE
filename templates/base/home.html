@@ -22,12 +22,12 @@
         </div>
         <ul class="nav-align">     
           <li class="nav-li"><a href="{% url 'citas' %}">CITAS</a></li>
-          {% if not user.groups.filter(name='Encargado').exists %}
+          {% if not es_encargado %}
           <li class="nav-li"><a href="{% url 'examenes' %}">EXAMENES</a></li>
           <li class="nav-li"><a href="{% url 'PAEI' %}">PAEI</a></li>
           {% endif %}
           <li class="nav-li"><a href="{% url 'reportes' %}">REPORTES</a></li>
-          {% if not user.groups.filter(name='Encargado').exists %}
+          {% if not es_encargado %}
           <li class="nav-li"><a href="{% url 'usuarios' %}">REGISTRO</a></li>
           <li class="nav-li"><a href="/admin/">PANEL ADMINISTRACION</a></li>
           {% endif %}
