@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
+from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView
 from registro.models import Alumno, Personal, AreaPersonal
 from registro.forms import AlumnoForm, PersonalForm
@@ -14,7 +15,22 @@ from django.db.models import Q
 # from personal.forms import PersonalForm
 # from alumnos.models import Alumno
 # from alumnos.forms import AlumnoForm
+def es_docente(user):
+    return user.groups.filter(name='Docente').exists()
 
+def es_especialista(user):
+    return user.groups.filter(name='Especialista').exists()
+
+def es_encargado(user):
+    return user.groups.filter(name='Encargado').exists()
+
+def es_personal(user):
+    return es_docente(user) or es_especialista(user)
+
+def solo_personal(user):
+    if user.groups.filter(name__in=['Docente', 'Especialista']).exists():
+        return True
+    return False
 # Create your views here.
 #       VISTAS PRINCIPALES DEL SISTEMA
 #vista menu
@@ -87,6 +103,7 @@ class CitasView(LoginRequiredMixin, TemplateView):
             "errores": form.errors
         })
 #vista examenes
+@method_decorator(user_passes_test(es_personal, login_url='citas'), name='dispatch')
 class ExamenesView(LoginRequiredMixin, TemplateView):
     template_name = 'paginas/examenes.html'
     login_url = 'login'
@@ -118,6 +135,7 @@ class ExamenesView(LoginRequiredMixin, TemplateView):
         })
         
 #vista PAEI
+@method_decorator(user_passes_test(es_personal, login_url='citas'), name='dispatch')
 class PAEIView(LoginRequiredMixin, TemplateView):
     template_name = 'paginas/PAEI.html'
     login_url = 'login'
@@ -183,6 +201,7 @@ class AyudaView(LoginRequiredMixin,TemplateView):
     login_url = 'login'
     redirect_field_name = 'redirect_to'
     #vista usuarios
+@method_decorator(user_passes_test(es_personal, login_url='citas'), name='dispatch')
 class UsuariosView(LoginRequiredMixin,TemplateView):
     template_name= 'paginas/usuarios.html'
     login_url = 'login'

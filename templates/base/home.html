@@ -1,5 +1,6 @@
 {% load static %}
 {% load widget_tweaks %}
+{% if user.is_authenticated %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -13,7 +14,7 @@
     <script src="{% static '/js/principal.js' %}"></script>
 </head>
 <body>
-  
+    {% if user.is_authenticated %}
     <div class="nav">
       <nav class="nav-align">
         <div class="container-logo">
@@ -21,15 +22,19 @@
         </div>
         <ul class="nav-align">     
           <li class="nav-li"><a href="{% url 'citas' %}">CITAS</a></li>
+          {% if not user.groups.filter(name='Encargado').exists %}
           <li class="nav-li"><a href="{% url 'examenes' %}">EXAMENES</a></li>
           <li class="nav-li"><a href="{% url 'PAEI' %}">PAEI</a></li>
+          {% endif %}
           <li class="nav-li"><a href="{% url 'reportes' %}">REPORTES</a></li>
+          {% if not user.groups.filter(name='Encargado').exists %}
           <li class="nav-li"><a href="{% url 'usuarios' %}">REGISTRO</a></li>
           <li class="nav-li"><a href="/admin/">PANEL ADMINISTRACION</a></li>
+          {% endif %}
         </ul>
       </nav>
     </div>
-    
+    {% endif %}
     
     <div class="right-block">
       <div class="context">
