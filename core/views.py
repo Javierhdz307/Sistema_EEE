@@ -43,74 +43,60 @@ class HomeView(LoginRequiredMixin,TemplateView):
         context['es_encargado'] = self.request.user.groups.filter(name='Encargado').exists()
         return context
 #vista citas
-class CitasView(LoginRequiredMixin, TemplateView):
-    template_name = 'paginas/citas.html'
-    login_url = 'login'
-    redirect_field_name = 'redirect_to'
-    
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['es_encargado'] = self.request.user.groups.filter(name='Encargado').exists()
-        return context
+@login_required(login_url='login')
+def citas_view(request):
+    es_encargado = request.user.groups.filter(name='Encargado').exists()
 
-    def get(self, request):
-        modo = request.GET.get("modo", "agendar")
+    modo = request.GET.get("modo", "agendar")
 
-        # Form principal para agendar
-        form = CitaForm()
+    # Formulario
+    form = CitaForm(request.POST or None)
 
-        # ---------------- FILTROS PARA LISTAR ----------------
-        fecha = request.GET.get("fecha")
-        hora = request.GET.get("hora")
-        alumno_filtro = request.GET.get("alumno")
-        personal_filtro = request.GET.get("personal")
+    # ---------------- FILTROS ----------------
+    fecha = request.GET.get("fecha")
+    hora = request.GET.get("hora")
+    alumno_filtro = request.GET.get("alumno")
+    personal_filtro = request.GET.get("personal")
 
-        citas = Cita.objects.all().order_by("fecha", "hora")
+    citas = Cita.objects.all().order_by("fecha", "hora")
 
-        if fecha:
-            citas = citas.filter(fecha=fecha)
-        if hora:
-            citas = citas.filter(hora=hora)
-        if alumno_filtro:
-            citas = citas.filter(alumno__IdAlumno__icontains=alumno_filtro)
-        if personal_filtro:
-            citas = citas.filter(personal__IdPersonal__icontains=personal_filtro)
+    if fecha:
+        citas = citas.filter(fecha=fecha)
+    if hora:
+        citas = citas.filter(hora=hora)
+    if alumno_filtro:
+        citas = citas.filter(alumno__IdAlumno__icontains=alumno_filtro)
+    if personal_filtro:
+        citas = citas.filter(personal__IdPersonal__icontains=personal_filtro)
 
-        # ---------------- BÚSQUEDA DE ALUMNO PARA AGENDAR ----------------
-        alumnos = None
-        alumno_query = request.GET.get("alumno_buscar")
+    # ---------------- BÚSQUEDA ALUMNO ----------------
+    alumnos = None
+    alumno_query = request.GET.get("alumno_buscar")
 
-        if alumno_query:
-            alumnos = Alumno.objects.filter(
-                IdAlumno__icontains=alumno_query
-            ) | Alumno.objects.filter(
-                NombreAlumno__icontains=alumno_query
-            )
+    if alumno_query:
+        alumnos = Alumno.objects.filter(
+            Q(IdAlumno__icontains=alumno_query) |
+            Q(NombreAlumno__icontains=alumno_query)
+        )
 
-        return render(request, self.template_name, {
-            "modo": modo,
-            "form": form,
-            "citas": citas,
-            "alumnos": alumnos,
-            "fecha": fecha or "",
-            "hora": hora or "",
-            "alumno": alumno_filtro or "",
-            "personal": personal_filtro or "",
-            "alumno_query": alumno_query or "",
-        })
-
-    def post(self, request):
-        form = CitaForm(request.POST)
-
+    # ---------------- GUARDAR ----------------
+    if request.method == "POST":
         if form.is_valid():
             form.save()
             return redirect("citas")
 
-        return render(request, self.template_name, {
-            "modo": "agendar",
-            "form": form,
-            "errores": form.errors
-        })
+    return render(request, 'paginas/citas.html', {
+        "es_encargado": es_encargado,
+        "modo": modo,
+        "form": form,
+        "citas": citas,
+        "alumnos": alumnos,
+        "fecha": fecha or "",
+        "hora": hora or "",
+        "alumno": alumno_filtro or "",
+        "personal": personal_filtro or "",
+        "alumno_query": alumno_query or "",
+    })
 #vista examenes
 @method_decorator(user_passes_test(es_personal, login_url='citas'), name='dispatch')
 class ExamenesView(LoginRequiredMixin, TemplateView):
