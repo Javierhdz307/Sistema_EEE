@@ -47,6 +47,11 @@ class CitasView(LoginRequiredMixin, TemplateView):
     template_name = 'paginas/citas.html'
     login_url = 'login'
     redirect_field_name = 'redirect_to'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['es_encargado'] = self.request.user.groups.filter(name='Encargado').exists()
+        return context
 
     def get(self, request):
         modo = request.GET.get("modo", "agendar")
