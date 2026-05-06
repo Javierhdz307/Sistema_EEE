@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import HomeView, citas_view, ExamenesView, PAEIView, ReportesView, SeguimientoView, AjustesView, AyudaView, UsuariosView,buscar_alumno, buscar_personal,historial_paei,buscar_alumno_paei
+from .views import HomeView, citas_view, ExamenesView, PAEIView, reportes_view, SeguimientoView, AjustesView, AyudaView, UsuariosView,buscar_alumno, buscar_personal,historial_paei,buscar_alumno_paei
 from django.contrib.auth import views as auth_views
 from django.conf import settings
 from django.conf.urls.static import static
@@ -9,7 +9,7 @@ urlpatterns = [
     path('citas/', citas_view, name='citas'),
     path('examenes/', ExamenesView.as_view(), name='examenes'),
     path('PAEI/', PAEIView.as_view(), name='PAEI'),
-    path('reportes/', ReportesView.as_view(), name='reportes'),
+    path('reportes/', reportes_view, name='reportes'),
     path('seguimiento/', SeguimientoView.as_view(), name='seguimiento'),
     path('ajustes/', AjustesView.as_view(), name='ajustes'),
     path('ayuda/', AyudaView.as_view(), name='ayuda'),

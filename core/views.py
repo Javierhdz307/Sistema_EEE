@@ -150,36 +150,35 @@ class PAEIView(LoginRequiredMixin, TemplateView):
 
         return render(request, self.template_name, {'form': form})
 #vista reportes
-class ReportesView(LoginRequiredMixin, TemplateView):
-    template_name = 'paginas/reportes.html'
-    login_url = 'login'
-    redirect_field_name = 'redirect_to'
-    
-    def get(self, request, *args, **kwargs):
+@login_required(login_url='login')
+def reportes_view(request):
 
-        query = request.GET.get("buscar", "").strip()
+    es_encargado = request.user.groups.filter(name='Encargado').exists()
 
-        alumno = None
-        examenes = None
-        paei = None
+    query = request.GET.get("buscar", "").strip()
 
-        if query:
-            # Buscar por ID o nombre
-            alumno = Alumno.objects.filter(
-                Q(id__icontains=query) |
-                Q(NombreAlumno__icontains=query) |
-                Q(ApellidoAlumno__icontains=query)
-            ).first()
+    alumno = None
+    examenes = None
+    paei = None
 
-            if alumno:
-                examenes = Examen.objects.filter(alumno=alumno)
-                paei = PAEI.objects.filter(alumno=alumno).first()
+    if query:
+        alumno = Alumno.objects.filter(
+            Q(id__icontains=query) |
+            Q(NombreAlumno__icontains=query) |
+            Q(ApellidoAlumno__icontains=query)
+        ).first()
 
-        return render(request, self.template_name, {
-            "alumno": alumno,
-            "examenes": examenes,
-            "paei": paei,
-        })
+        if alumno:
+            examenes = Examen.objects.filter(alumno=alumno)
+            paei = PAEI.objects.filter(alumno=alumno).first()
+
+    return render(request, 'paginas/reportes.html', {
+        "es_encargado": es_encargado,
+        "alumno": alumno,
+        "examenes": examenes,
+        "paei": paei,
+        "query": query,
+    })
 #vista seguimiento
 class SeguimientoView(LoginRequiredMixin,TemplateView):
     template_name= 'paginas/seguimiento.html'
