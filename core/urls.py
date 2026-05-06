@@ -1,12 +1,12 @@
 from django.urls import path
-from .views import HomeView, CitasView, ExamenesView, PAEIView, ReportesView, SeguimientoView, AjustesView, AyudaView, UsuariosView,buscar_alumno, buscar_personal,historial_paei,buscar_alumno_paei
+from .views import HomeView, citas_view, ExamenesView, PAEIView, ReportesView, SeguimientoView, AjustesView, AyudaView, UsuariosView,buscar_alumno, buscar_personal,historial_paei,buscar_alumno_paei
 from django.contrib.auth import views as auth_views
 from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
     path('', HomeView.as_view(), name='home'),
-    path('citas/', CitasView.as_view(), name='citas'),
+    path('citas/', citas_view, name='citas'),
     path('examenes/', ExamenesView.as_view(), name='examenes'),
     path('PAEI/', PAEIView.as_view(), name='PAEI'),
     path('reportes/', ReportesView.as_view(), name='reportes'),
